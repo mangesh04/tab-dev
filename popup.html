@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>User Scripts API Demo</title>
+  <script defer src="popup.js"></script>
+
+  <style>
+    * {
+      margin: 0px;
+      padding: 0px;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #warning {
+      display: none;
+      margin-bottom: 30px;
+    }
+
+    body {
+      background-color: #2f3a44;
+      color: white;
+      width: max-content;
+      padding: 15px;
+    }
+
+    .popup {
+      position: relative;
+      padding: 10px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid black;
+      border-radius: 10px;
+      min-width: 300px;
+      margin: 1px;
+      gap: 25px;
+      user-select: none;
+    }
+
+    .round {
+      /* border: 1px solid black; */
+      border: none;
+      border-radius: 20px;
+      padding: 5px;
+      padding-inline: 10px;
+      /* font-size: 10px; */
+    }
+
+    ul {
+      list-style: none;
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      /* border: solid 1px white; */
+      width: 100%;
+    }
+
+    .widget_ops {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      right: 10px;
+    }
+
+    .widget_name {
+      font-size: medium;
+      margin-right: 20px;
+      width: 12rem;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      height: 20px;
+      width: 40px;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 15px;
+      width: 15px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    input:checked+.slider {
+      background-color: #1573c0;
+    }
+
+    input:focus+.slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked+.slider:before {
+      -webkit-transform: translateX(20px);
+      -ms-transform: translateX(20px);
+      transform: translateX(20px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .start_btn {
+      bottom: 10px;
+      width: -content;
+    }
+
+    .dropdown {
+      width: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .drop_down_menu_btn {
+      margin: 0px;
+    }
+
+    .drop_down_menu {
+      /* display: none; */
+      font-size: 0.8rem;
+      position: absolute;
+      background-color: wheat;
+      padding: 10px;
+      top: 30px;
+    }
+
+    .top_left_corner {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+    }
+
+    textarea {
+      padding: 10px;
+      background-color: black;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="warning">
+
+    <p>
+      ⚠️ To use the User Scripts API, you need to first enable developer mode
+      at <b>chrome://extensions</b>.
+    </p>
+
+    <a href="">Reload</a>
+
+  </div>
+
+
+  <div class="popup">
+
+    <select name="dropdown" id="dropdown" class="round">
+      <option value="google gemini"> google gemini</option>
+      <option value="chat gpt">chat gpt</option>
+    </select>
+
+
+    <input type="text" placeholder="api key" id="api_key_inp" class="api_key_input round">
+    <button id="api_key_save_btn" class="check_api_key round">submit</button>
+  </div>
+
+  <div class="popup">
+
+    <h2>Host</h2>
+    <input type="text" name="host" placeholder="example.com" class="round" id="host_inp" />
+
+    <button type="button" id="save_host_btn" class="round">Save</button>
+
+    <button class="top_left_corner round back_btn">
+      < </button>
+  </div>
+
+  <div class="popup">
+    <h2>widgets</h2>
+    <button class="round" id="build_new_btn">build new widget</button>
+
+    <ul id="widget_list">
+    </ul>
+
+    <button class="start_btn round" id="start_btn">start</button>
+
+    <button class="top_left_corner round back_btn">
+      < </button>
+  </div>
+
+  <div class="popup">
+    <h2>Custom script</h2>
+
+    <textarea name="prompt" id="prompt_inp" placeholder="write your promt here to get ai generated code"></textarea>
+    <button id="generate_btn" class="round" type="button">Generate</button>
+
+    <textarea name="custom_script" draggable="false" rows="8" placeholder="alert('hi');"
+      id="custom_script_inp"></textarea>
+
+    <input type="text" placeholder="name this widget" class="round" id="widget_name_inp">
+
+    <button type="button" class="round" id="save_apply_btn">save and apply</button>
+
+    <button class="top_left_corner round back_btn">
+      < </button>
+  </div>
+
+
+</body>
+
+</html>
